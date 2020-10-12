@@ -26,7 +26,7 @@ import os
 # read version.py file to get version and metadata information
 here = os.path.abspath(os.path.dirname(__file__))
 version_py = os.path.join(here, "src/chimera/core/version.py")
-execfile(version_py)
+exec(open(version_py).read())
 
 # chimera scripts
 chimera_scripts = ['src/scripts/chimera',
@@ -66,16 +66,20 @@ setup(
     scripts=chimera_scripts,
 
     # installation happens in the specified order
-    install_requires=[  "astropy<3",
-                         "numpy>=1.8.0",
+    install_requires=[  "astropy",
+                         "numpy",
                          "pyephem",
-                         "Pyro>=3.16",
+                         "pyro-ppl",
                          "python-dateutil",
                          "PyYAML",
                          "RO",
-                         "suds",
+                         "suds-jurko",
                          "SQLAlchemy",
                      ] + platform_deps,
 
     tests_require=["nose", "coverage", "wheel"],
 )
+
+#    install_requires=[  "astropy<3",
+#                         "numpy>=1.8.0",
+#                         "Pyro>=3.16",

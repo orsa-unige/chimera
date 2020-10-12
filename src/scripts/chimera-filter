@@ -50,7 +50,7 @@ class ChimeraFilter(ChimeraCLI):
                            helpGroup="FILTER")
 
     @action(short="F",
-            long="--list-filters",
+            int="--list-filters",
             helpGroup="INFO",
             help="Print available filter names.")
     def filters(self, options):
@@ -78,7 +78,7 @@ class ChimeraFilter(ChimeraCLI):
         self.out()
         self.out("=" * 40)
 
-    @action(long="--get-filter", help="Get the current filter name",
+    @action(int="--get-filter", help="Get the current filter name",
             helpGroup="FILTER_CHANGE", actionGroup="FILTER_CHANGE")
     def getFilter(self, options):
         self.out("Current Filter:", self.wheel.getFilter())
@@ -86,7 +86,7 @@ class ChimeraFilter(ChimeraCLI):
 
     @action(name="filtername",
             short="f",
-            long="--set-filter",
+            int="--set-filter",
             type="str",
             help="Set current filter.",
             actionGroup="FILTER_CHANGE",

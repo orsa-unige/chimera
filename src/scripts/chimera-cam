@@ -95,7 +95,7 @@ class ChimeraCam (ChimeraCLI):
                                 help="Base filename including full path if needed.",
                                 default="$DATE-$TIME.fits"),
                            dict(name="filter",
-                                long="filters",
+                                int="filters",
                                 short="f",
                                 type="string",
                                 helpGroup="EXPOSE",
@@ -124,7 +124,7 @@ class ChimeraCam (ChimeraCLI):
                                 choices=["FITS_RICE", "BZ2", "ZIP", "GZIP", "NO", "fits_rice", "bz2", "zip", "gzip", "no"],
                                 default="no"),
                            dict(name="ignore_dome",
-                                long="ignore-dome",
+                                int="ignore-dome",
                                 type=ParameterType.BOOLEAN,
                                 default=False,
                                 helpGroup="EXPOSE",
@@ -132,12 +132,12 @@ class ChimeraCam (ChimeraCLI):
 
         self.addHelpGroup("DISPLAY", "Display configuration")
         self.addParameters(dict(name="disable_display",
-                                long="disable-display",
+                                int="disable-display",
                                 type=ParameterType.BOOLEAN,
                                 helpGroup="DISPLAY",
                                 help="Don't try to display image on DS9. default is display for exptime >= 5"),
                            dict(name="force_display",
-                                long="force-display",
+                                int="force-display",
                                 type=ParameterType.BOOLEAN,
                                 helpGroup="DISPLAY",
                                 help="Always display image on DS9 regardless of exptime."))
@@ -154,35 +154,35 @@ class ChimeraCam (ChimeraCLI):
 
         self.addHelpGroup("IMAGETYPE", "Image types")
         self.addParameters(dict(name="isBias",
-                                long="bias",
+                                int="bias",
                                 type=ParameterType.CONSTANT, const="zero",
                                 help="Mark this frame as a BIAS frame.",
                                 helpGroup="IMAGETYPE"),
                            dict(name="isDomeFlat",
-                                long="flat",
+                                int="flat",
                                 type=ParameterType.CONSTANT,
                                 const="flat",
                                 help="Mark this frame as a DOME FLAT frame.",
                                 helpGroup="IMAGETYPE"),
                            dict(name="isSkyFlat",
-                                long="sky-flat",
+                                int="sky-flat",
                                 type=ParameterType.CONSTANT, const="skyflat",
                                 help="Mark this frame as a SKY FLAT frame.",
                                 helpGroup="IMAGETYPE"),
                            dict(name="isDark",
-                                long="dark",
+                                int="dark",
                                 type=ParameterType.CONSTANT, const="dark",
                                 help="Mark this frame as a DARK frame.",
                                 helpGroup="IMAGETYPE"),
                            dict(name="isObject",
-                                long="object",
+                                int="object",
                                 type="string", default="object",
                                 help="Mark this frame as a OBJECT frame and add OBJECT keyword to the FITS file using OBJECTNAME.",
                                 helpGroup="IMAGETYPE",
                                 metavar="OBJECTNAME"))
 
     @action(short="F",
-            long="--list-filters",
+            int="--list-filters",
             helpGroup="INFO",
             help="Print available filter names.")
     def filters(self, options):
@@ -200,7 +200,7 @@ class ChimeraCam (ChimeraCLI):
 
     @action(name="setpoint",
             short="T",
-            long="start-cooling",
+            int="start-cooling",
             actionGroup="TEMP",
             type="float",
             helpGroup="TEMP",
@@ -238,7 +238,7 @@ class ChimeraCam (ChimeraCLI):
         self.out(40 * "=")
         self.exit()
 
-    @action(long="stop-cooling", actionGroup="TEMP",
+    @action(int="stop-cooling", actionGroup="TEMP",
             helpGroup="TEMP", help="Stop camera cooling")
     def stopCooling(self, options):
         camera = self.camera
@@ -250,7 +250,7 @@ class ChimeraCam (ChimeraCLI):
         self.out(40 * "=")
         self.exit()
 
-    @action(long="stop-fan", actionGroup="TEMP_FAN",
+    @action(int="stop-fan", actionGroup="TEMP_FAN",
             helpGroup="TEMP", help="Stop the cooler fan.")
     def stopFan(self, options):
         camera = self.camera
@@ -262,7 +262,7 @@ class ChimeraCam (ChimeraCLI):
         self.out(40 * "=")
         self.exit()
 
-    @action(long="start-fan", actionGroup="TEMP_FAN",
+    @action(int="start-fan", actionGroup="TEMP_FAN",
             helpGroup="TEMP", help="Start the cooler fan.")
     def startFan(self, options):
         camera = self.camera
@@ -302,7 +302,7 @@ class ChimeraCam (ChimeraCLI):
         ccds = camera.getCCDs()
         currentCCD = camera.getCurrentCCD()
         self.out("Available CCDs: ", end="")
-        for ccd in ccds.keys():
+        for ccd in list(ccds.keys()):
             if ccd == currentCCD:
                 self.out("*%s* " % str(ccds[ccd]), end="")
             else:
@@ -312,7 +312,7 @@ class ChimeraCam (ChimeraCLI):
         self.out("=" * 40)
         self.out("ADCs: ", end="")
         adcs = camera.getADCs()
-        for adc in adcs.keys():
+        for adc in list(adcs.keys()):
             self.out("%s " % adc, end="")
         self.out()
 
@@ -324,7 +324,7 @@ class ChimeraCam (ChimeraCLI):
 
         self.out("=" * 40)
         self.out("Available binnings: ", end="")
-        sortedBins = camera.getBinnings().keys()
+        sortedBins = list(camera.getBinnings().keys())
         sortedBins.sort()
 
         for bin in sortedBins:
@@ -363,7 +363,7 @@ class ChimeraCam (ChimeraCLI):
         binnings = camera.getBinnings()
 
         if options.binning:
-            if options.binning not in binnings.keys():
+            if options.binning not in list(binnings.keys()):
                 self.exit(
                     "Invalid binning mode. See --info for available binning modes")
 
@@ -539,7 +539,7 @@ class ChimeraCam (ChimeraCLI):
                     self.out("Changing to filter %s... " % f, end="")
                     self.wheel.setFilter(f)
                     self.out("OK")
-                except InvalidFilterPositionException, e:
+                except InvalidFilterPositionException as e:
                     self.err(
                         "ERROR. Couldn't move filter wheel to %s. (%s)" % (f, e))
                     self.exit()
@@ -585,9 +585,9 @@ class ChimeraCam (ChimeraCLI):
                                   wait_dome=not options.ignore_dome,
                                   object_name=object_name)
 
-            except IOError, e:
+            except IOError as e:
                 self.err("Error trying to take exposures (%s)" % str(e))
-            except Exception, e:
+            except Exception as e:
                 self.err("Error trying to take exposures. (%s)" %
                          printException(e))
         finally:

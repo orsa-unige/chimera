@@ -27,12 +27,12 @@ import logging
 
 from time import sleep
 
-# Ensure booleans exist (not needed for Python 2.2.1 or higher)
-try:
-    True
-except NameError:
-    False = 0
-    True = not False
+# # Ensure booleans exist (not needed for Python 2.2.1 or higher)
+# try:
+#     True
+# except NameError:
+#     False = 0
+#     True = not False
 
 #threading._VERBOSE = True
 

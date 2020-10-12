@@ -6,8 +6,8 @@ from pyraf import iraf
 
 from chimera.core.chimeraobject import ChimeraObject
 
-import calibration
-import reduction_tools
+from . import calibration
+from . import reduction_tools
 
 
 class Reduction(ChimeraObject):
@@ -91,15 +91,15 @@ class Reduction(ChimeraObject):
 
         return reducedlist
 
-    def _createMasters(self, zero='yes', dark='yes', flat='yes'):
+    def _createMasters(self, zero=True, dark=True, flat=True):
         """
         Calls to the calibration module to create master calibration images.
         zero, dark, and flat are set to 'yes,' but can be set to 'no' if any
         of those are not desired.
         """
 
-        True = 'yes'
-        False = 'no'
+        # True = 'yes'
+        # False = 'no'
 
         while(1):
             if not zero and dark and flat:
@@ -151,8 +151,8 @@ class Reduction(ChimeraObject):
         """
 
         self.imagedate = os.path.split(os.path.split(input)[0])[-1]
-        print os.path.split(input)[0]
-        print self.imagedate
+        print(os.path.split(input)[0])
+        print(self.imagedate)
 
         self.reduction_dir = self["calibration_dir"] + self.imagedate + '/'
 
@@ -166,13 +166,13 @@ class Reduction(ChimeraObject):
             reduction_tools.copyNewFits(imagelist, self.reduction_dir)
 
             if not self._haveMasters(self.reduction_dir):
-                print "No master calibration images found for this date."
+                print("No master calibration images found for this date.")
                 return None
 
             else:
 
                 subset_file = open(self.reduction_dir + 'instruments', 'w')
-                print >> subset_file, "subset   %s" % subset
+                print("subset   %s" % subset, file=subset_file)
                 subset_file.close()
 
                 reduced_images = self._processScienceIm(
@@ -180,14 +180,14 @@ class Reduction(ChimeraObject):
                 return reduced_images
 
         elif os.path.isdir(input):
-            print input
+            print(input)
 
             copylist = glob(input + '*')
 
             reduction_tools.copyNewFits(copylist, self.reduction_dir)
 
             subset_file = open(self.reduction_dir + 'instruments', 'w')
-            print >> subset_file, "subset   %s" % subset
+            print("subset   %s" % subset, file=subset_file)
             subset_file.close()
 
             if not self._haveMasters(self.reduction_dir):

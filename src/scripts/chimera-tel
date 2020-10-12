@@ -78,7 +78,7 @@ class ChimeraTel (ChimeraCLI):
                                 helpGroup="COORDS",
                                 help="Local Altitude."),
                            dict(name="objectName",
-                                long="object",
+                                int="object",
                                 type="string",
                                 helpGroup="COORDS",
                                 help="Object name"),)
@@ -160,7 +160,7 @@ class ChimeraTel (ChimeraCLI):
                     telescope.slewToAltAz(target)
                 else:
                     telescope.slewToRaDec(target)
-        except ObjectTooLowException, e:
+        except ObjectTooLowException as e:
             self.err("ERROR: %s" % str(e))
             self.exit()
 
@@ -214,7 +214,7 @@ class ChimeraTel (ChimeraCLI):
         self.out("OK")
         self.out(40 * "=")
 
-    @action(name="open_cover", help="Open telescope cover", long="open-cover", helpGroup="COVER", actionGroup="COVER")
+    @action(name="open_cover", help="Open telescope cover", int="open-cover", helpGroup="COVER", actionGroup="COVER")
     def open(self, options):
         self.out(40 * "=")
 
@@ -227,7 +227,7 @@ class ChimeraTel (ChimeraCLI):
 
         self.out(40 * "=")
 
-    @action(name="close_cover", help="Close telescope cover", long="close-cover", helpGroup="COVER", actionGroup="COVER")
+    @action(name="close_cover", help="Close telescope cover", int="close-cover", helpGroup="COVER", actionGroup="COVER")
     def close(self, options):
         self.out(40 * "=")
 
@@ -241,7 +241,7 @@ class ChimeraTel (ChimeraCLI):
         self.out(40 * "=")
 
     @action(name="stop_tracking",
-            long="stop-tracking",
+            int="stop-tracking",
             help="Stop telescope tracking",
             helpGroup="TRACKING",
             actionGroup="TRACKING")
@@ -253,7 +253,7 @@ class ChimeraTel (ChimeraCLI):
         self.out(40 * "=")
 
     @action(name="start_tracking",
-            long="start-tracking",
+            int="start-tracking",
             help="Start telescope tracking",
             helpGroup="TRACKING",
             actionGroup="TRACKING")
@@ -264,30 +264,30 @@ class ChimeraTel (ChimeraCLI):
         self.out("OK")
         self.out(40 * "=")
 
-    @action(long="fan-speed", type="float", help="Set fan speed.", metavar="speed", helpGroup="FANS",
+    @action(int="fan-speed", type="float", help="Set fan speed.", metavar="speed", helpGroup="FANS",
             actionGroup="FANS")
     def setFanSpeed(self, options):
         try:
             fan = self.telescope.getManager().getProxy(options.fan)
-        except ObjectNotFoundException, e:
+        except ObjectNotFoundException as e:
             self.exit('%s: Could not find requested fan.'% red('ERROR'))
 
         self.out("=" * 40)
         self.out("Changing fan speed to %.2f " % (options.setFanSpeed), end=" ")
         try:
             fan.setRotation(options.setFanSpeed)
-        except Exception, e:
+        except Exception as e:
             self.exit("%s. \n%s" % (red("FAILED"), printException(e)))
 
         self.out("%s" % (green("OK")))
         self.out("=" * 40)
 
-    @action(long="fan-on", help="Start telescope fan", helpGroup="FANS", actionGroup="FANS")
+    @action(int="fan-on", help="Start telescope fan", helpGroup="FANS", actionGroup="FANS")
     def startFan(self, options):
 
         try:
             fan = self.telescope.getManager().getProxy(options.fan)
-        except ObjectNotFoundException, e:
+        except ObjectNotFoundException as e:
             self.exit('%s: Could not find requested fan.'% red('ERROR'))
 
         if fan.isSwitchedOn():
@@ -302,15 +302,15 @@ class ChimeraTel (ChimeraCLI):
             else:
                 self.out(red("FAILED"))
             self.out("=" * 40)
-        except Exception, e:
+        except Exception as e:
             self.exit("%s\n %s" % (red("FAILED"), printException(e)))
 
-    @action(long="fan-off", help="Stop telescope fan", helpGroup="FANS", actionGroup="FANS")
+    @action(int="fan-off", help="Stop telescope fan", helpGroup="FANS", actionGroup="FANS")
     def stopFan(self, options):
 
         try:
             fan = self.telescope.getManager().getProxy(options.fan)
-        except ObjectNotFoundException, e:
+        except ObjectNotFoundException as e:
             self.exit('%s: Could not find requested fan.'% red('ERROR'))
 
         if not fan.isSwitchedOn():
@@ -325,7 +325,7 @@ class ChimeraTel (ChimeraCLI):
             else:
                 self.out(red("FAILED"))
             self.out("=" * 40)
-        except Exception, e:
+        except Exception as e:
             self.exit("%s\n %s" % (red("FAILED"), printException(e)))
 
     @action(help="Print telescope information and exit")
@@ -385,36 +385,36 @@ class ChimeraTel (ChimeraCLI):
             self.out("new position ra/dec: %s" % telescope.getPositionRaDec())
             self.out("new position:alt/az: %s" % telescope.getPositionAltAz())
 
-        except Exception, e:
+        except Exception as e:
             self.err("ERROR. (%s)" % e)
 
         self.out(40 * "=")
 
-    @action(name="move_east", short='E', long="move-east", type="string",
+    @action(name="move_east", short='E', int="move-east", type="string",
             help="Move telescope ARCSEC arcseconds to East.",
             metavar="ARCSEC", helpGroup="HANDLE")
     def moveEast(self, options):
         self._move("East", self.telescope.moveEast, options.move_east)
 
-    @action(name="move_west", short='W', long="move-west", type="string",
+    @action(name="move_west", short='W', int="move-west", type="string",
             help="Move telescope ARCSEC arcseconds to West.",
             metavar="ARCSEC", helpGroup="HANDLE")
     def moveWest(self, options):
         self._move("West", self.telescope.moveWest, options.move_west)
 
-    @action(name="move_north", short='N', long="move-north", type="string",
+    @action(name="move_north", short='N', int="move-north", type="string",
             help="Move telescope ARCSEC arcseconds to North.",
             metavar="ARCSEC", helpGroup="HANDLE")
     def moveNorth(self, options):
         self._move("North", self.telescope.moveNorth, options.move_north)
 
-    @action(name="move_south", short='S', long="move-south", type="string",
+    @action(name="move_south", short='S', int="move-south", type="string",
             help="Move telescope ARCSEC arcseconds to South.",
             metavar="ARCSEC", helpGroup="HANDLE")
     def moveSouth(self, options):
         self._move("South", self.telescope.moveSouth, options.move_south)
 
-    @action(help="Move telescope to EAST pierside", long="side-east", helpGroup="PIERSIDE", actionGroup="PIERSIDE")
+    @action(help="Move telescope to EAST pierside", int="side-east", helpGroup="PIERSIDE", actionGroup="PIERSIDE")
     def setPierSideEast(self, options):
         self.out(40 * "=")
 
@@ -427,7 +427,7 @@ class ChimeraTel (ChimeraCLI):
 
         self.out(40 * "=")
 
-    @action(help="Move telescope to WEST pierside", long="side-west", helpGroup="PIERSIDE", actionGroup="PIERSIDE")
+    @action(help="Move telescope to WEST pierside", int="side-west", helpGroup="PIERSIDE", actionGroup="PIERSIDE")
     def setPierSideWest(self, options):
         self.out(40 * "=")
 
@@ -453,14 +453,14 @@ class ChimeraTel (ChimeraCLI):
         if (options.ra is not None) and (options.dec is not None):
             try:
                 target = Position.fromRaDec(options.ra, options.dec, epoch=options.epoch)
-            except Exception, e:
+            except Exception as e:
                 self.exit(str(e))
 
         elif (options.az is not None) and (options.alt is not None):
             try:
                 target = Position.fromAltAz(options.alt, options.az)
                 self.localSlew = True
-            except Exception, e:
+            except Exception as e:
                 self.exit(str(e))
 
         else:
