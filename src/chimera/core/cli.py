@@ -326,11 +326,11 @@ class ChimeraCLI (object):
         # base actions and parameters
 
         if verbosity:
-            self.addParameters(dict(name="quiet", short="q", int="quiet",
+            self.addParameters(dict(name="quiet", short="q", inst="quiet",
                                     type=ParameterType.BOOLEAN, default=True,
                                     help="Don't display information while working."),
 
-                               dict(name="verbose", short="v", int="verbose",
+                               dict(name="verbose", short="v", inst="verbose",
                                     type=ParameterType.BOOLEAN, default=False,
                                     help="Display information while working"))
 
@@ -391,7 +391,7 @@ class ChimeraCLI (object):
 
             self.addParameters(dict(name="inst_dir",
                                     short="I",
-                                    int="instruments-dir",
+                                    inst="instruments-dir",
                                     helpGroup="PATHS",
                                     type=ParameterType.INCLUDE_PATH,
                                     default=ChimeraPath().instruments,
@@ -412,7 +412,7 @@ class ChimeraCLI (object):
 
             self.addParameters(dict(name="ctrl_dir",
                                     short="C",
-                                    int="controllers-dir",
+                                    inst="controllers-dir",
                                     helpGroup="PATHS",
                                     type=ParameterType.INCLUDE_PATH,
                                     default=ChimeraPath().controllers,

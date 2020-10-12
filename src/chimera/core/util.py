@@ -25,12 +25,14 @@ from chimera.core.constants import MANAGER_DEFAULT_HOST, MANAGER_DEFAULT_PORT, M
 try:
     import Pyro4.core
 except ImportError as e:
-    raise RuntimeError("You must have Pyro version >= 3.6 installed.")
+    raise RuntimeError("You must have Pyro4")
 
 
 def getManagerURI(host=None, port=None):
 
+    print(MANAGER_LOCATION)
+    
     host = host or MANAGER_DEFAULT_HOST
     port = port or MANAGER_DEFAULT_PORT
 
-    return Pyro4.core.PyroURI(host, MANAGER_LOCATION, port)
+    return Pyro4.URI("PYRO:ciccio@"+MANAGER_LOCATION+":"+str(port))

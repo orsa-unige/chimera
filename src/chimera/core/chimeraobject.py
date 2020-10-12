@@ -205,7 +205,7 @@ class ChimeraObject (RemoteObject, ILifeCycle, metaclass=MetaObject):
         location = Location(location)
 
         self.__location__ = location
-        self.setGUID("/%s/%s" % (location.cls, location.name))
+        #self.setGUID("/%s/%s" % (location.cls, location.name))
         return True
 
     def getManager(self):

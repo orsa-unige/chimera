@@ -214,7 +214,7 @@ class OptionsChecker (Checker):
 
         for value in opt:
 
-            if type(value) in (int, long):
+            if type(value) is int:
                 options.append({"value": value,
                                 "checker": IntChecker()})
                 continue
@@ -391,7 +391,7 @@ class Config (object):
 
         for name, value in list(opt.items()):
 
-            if type(value) in (int, long):
+            if type(value) is int:
                 options[name] = Option(name, value, IntChecker())
                 continue
 
@@ -407,7 +407,7 @@ class Config (object):
                 options[name] = Option(name, value, BoolChecker())
                 continue
 
-            if isinstance(value, None):
+            if type(value) is None:
                 options[name] = Option(name, value, NoneChecker())
                 continue
 

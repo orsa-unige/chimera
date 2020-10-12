@@ -76,33 +76,42 @@ class ManagerAdapter (Pyro4.core.Daemon):
             log.error("Couldn't start Chimera server. Check errors below.")
             raise
 
-        self.useNameServer(None)
-        self.connect(manager)
+        #self.useNameServer(None)
+        self.register(manager)
 
         # saved here to give objects a manager when they ask
         self.manager = manager
 
-        self.getAdapter().setTimeout(None)
+        #self.getAdapter().setTimeout(None)
 
     def getManager(self):
         return self.manager
 
     def getProxyForObj(self, obj):
-        return Proxy(uri=Pyro4.core.PyroURI(self.hostname,
-                                           obj.GUID(),
-                                           prtcol=self.protocol,
-                                           port=self.port))
 
+        # return Proxy(uri=Pyro4.URI(self.hostname,
+        #                                    obj.GUID(),
+        #                                    prtcol=self.protocol,
+        #                                    port=self.port))
+
+        #URI = Pyro4.URI("PYRO:ciccio@"+MANAGER_LOCATION+":"+str(self.port))
+        URI = Pyro4.URI("PYRO:ciccio@"+MANAGER_LOCATION+":7666")
+
+        return Proxy(uri=URI)
+        
     def connect(self, obj, name=None, index=None):
 
-        URI = Pyro4.core.PyroURI(
-            self.hostname, obj.GUID(), prtcol=self.protocol, port=self.port)
+        URI = Pyro4.URI("PYRO:ciccio@"+MANAGER_LOCATION+":7666")
 
-        self.implementations[obj.GUID()] = (obj, name)
+        # URI = Pyro4.URI(
+        #     self.hostname, obj.GUID(), prtcol=self.protocol, port=self.port)
 
-        if index:
-            self.implementations[index] = (obj, name)
+        # self.implementations[obj.GUID()] = (obj, name)
 
+        # if index:
+        #     self.implementations[index] = (obj, name)
+
+        
         obj.setPyroDaemon(self)
 
         return URI
@@ -158,13 +167,14 @@ class Manager (RemoteObject):
     # adapter host/port
     def getHostname(self):
         if self.adapter:
-            return self.adapter.hostname
+            return str(None) #self.adapter.hostname
         else:
             return None
 
     def getPort(self):
         if self.adapter:
-            return self.adapter.port
+            #return self.adapter.port
+            return None
         else:
             return None
 
