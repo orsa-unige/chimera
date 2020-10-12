@@ -1,4 +1,4 @@
-import Pyro.constants
+import Pyro4.constants
 
 import sys
 import traceback
@@ -37,7 +37,7 @@ def strException(e):
     # almost copied form Pyro to allow personalization on format
     try:
         exc_type, exc_value, exc_tb = sys.exc_info()
-        remote_tb = getattr(e, Pyro.constants.TRACEBACK_ATTRIBUTE, None)
+        remote_tb = getattr(e, Pyro4.constants.TRACEBACK_ATTRIBUTE, None)
         local_tb = traceback.format_exception(exc_type, exc_value, exc_tb)
 
         if remote_tb:

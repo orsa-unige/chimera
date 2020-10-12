@@ -69,7 +69,7 @@ setup(
     install_requires=[  "astropy",
                          "numpy",
                          "pyephem",
-                         "pyro-ppl",
+                         "Pyro4",
                          "python-dateutil",
                          "PyYAML",
                          "RO",

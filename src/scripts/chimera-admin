@@ -36,7 +36,7 @@ from chimera.core.path import ChimeraPath
 from chimera.core.managerlocator import ManagerLocator, ManagerNotFoundException
 from chimera.core.systemconfig import SystemConfig
 
-from Pyro.util import getPyroTraceback
+from Pyro4.util import getPyroTraceback
 
 import chimera.core.log
 

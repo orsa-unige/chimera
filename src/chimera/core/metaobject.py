@@ -35,7 +35,7 @@ from chimera.core.constants import EVENT_ATTRIBUTE_NAME, \
     INSTANCE_MONITOR_ATTRIBUTE_NAME, \
     RWLOCK_ATTRIBUTE_NAME
 
-from types import DictType
+import types
 
 
 __all__ = ['MetaObject']
@@ -50,7 +50,7 @@ class MetaObject (type):
         config = {}
 
         for base in bases:
-            if CONFIG_ATTRIBUTE_NAME in base.__dict__ and type(base.__dict__[CONFIG_ATTRIBUTE_NAME]) == DictType:
+            if CONFIG_ATTRIBUTE_NAME in base.__dict__ and type(base.__dict__[CONFIG_ATTRIBUTE_NAME]) is dict:
                 config = dict(config, **base.__dict__[CONFIG_ATTRIBUTE_NAME])
 
         # update our class with all configs got from bases, if none defined,

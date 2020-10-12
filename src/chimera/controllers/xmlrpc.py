@@ -34,7 +34,7 @@ from chimera.core.exceptions import ObjectNotFoundException
 from chimera.util.coord import Coord
 from chimera.util.position import Position
 
-from Pyro.util import getPyroTraceback
+from Pyro4.util import getPyroTraceback
 
 
 class ThreadingXMLRPCServer (socketserver.ThreadingTCPServer,

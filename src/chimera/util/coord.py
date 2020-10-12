@@ -23,7 +23,7 @@
 import math
 import re
 import sys
-from types import StringType, LongType, IntType, FloatType
+import types
 
 TWO_PI = 2.0 * math.pi
 PI_OVER_TWO = (math.pi / 2.0)
@@ -121,10 +121,10 @@ class CoordUtil (object):
     def dms2d(dms):
 
         # float/int case
-        if type(dms) in [FloatType, IntType, LongType]:
+        if type(dms) in [float, int]:
             return float(dms)
 
-        if type(dms) == StringType:
+        if type(dms) is str:
 
             # try to match the regular expression
             matches = CoordUtil.COORD_RE.match(dms.strip())
@@ -589,7 +589,7 @@ class Coord (object):
     @staticmethod
     def _from_float_to(c, state):
 
-        if type(c) == StringType:
+        if type(c) is str:
             try:
                 c = float(c)
             except ValueError:

@@ -6,7 +6,7 @@ from chimera.util.coord import Coord, State
 from nose import SkipTest
 from nose.tools import assert_raises
 
-from types import StringType, IntType, FloatType, BooleanType
+import types
 
 
 class TestConfig (object):
@@ -18,7 +18,7 @@ class TestConfig (object):
         # valid
         for i in ("valid", 1, True, 1.0, object):
             assert c.__setitem__("key_str", i) != False, "%s (%s) is a valid str configuration" % (i, type(i))
-            assert type(c.__getitem__("key_str")) == StringType, "should return str object"
+            assert type(c.__getitem__("key_str")) is str, "should return str object"
 
         # invalid
         # any?
@@ -31,10 +31,10 @@ class TestConfig (object):
         # valid
         for i in (1, 1.0, "1", "1.0", "-1", "-1.0", "   10  ", True):
             assert c.__setitem__("key_int", i) != False, "%s (%s) is a valid int configuration" % (i, type(i))
-            assert type(c.__getitem__("key_int")) == IntType, "should return int object"
+            assert type(c.__getitem__("key_int")) is int, "should return int object"
 
             assert c.__setitem__("key_float", i) != False, "%s (%s) is a valid float configuration" % (i, type(i))
-            assert type(c.__getitem__("key_float")) == FloatType, "should return str object"
+            assert type(c.__getitem__("key_float")) is float, "should return str object"
 
         # invalid
         for i in (object, "a10", "1.a"):
@@ -53,7 +53,7 @@ class TestConfig (object):
             # no assert because setitem returns the old and this can be False
             # we get errors if any set raises OptionConversionException
             c.__setitem__("key_bool", i)
-            assert type(c.__getitem__("key_bool")) == BooleanType, "should return bool object"
+            assert type(c.__getitem__("key_bool")) is bool, "should return bool object"
 
         # invalid
         for i in (object, "ok", 10):
@@ -71,11 +71,11 @@ class TestConfig (object):
         # valid
         for i in (1, 2, 3, True): # True == 1
             assert c.__setitem__("key_opt_int", i) != False, "%s (%s) is a valid configuration" % (i, type(i))
-            assert type(c.__getitem__("key_opt_int")) == IntType, "should return int object"
+            assert type(c.__getitem__("key_opt_int")) is int, "should return int object"
 
         for i in ("one", "two", "three"):
             assert c.__setitem__("key_opt_str", i) != False, "%s (%s) is a valid configuration" % (i, type(i))
-            assert type(c.__getitem__("key_opt_str")) == StringType, "should return str object"
+            assert type(c.__getitem__("key_opt_str")) is str, "should return str object"
 
 
         # invalid
@@ -93,7 +93,7 @@ class TestConfig (object):
         # valid
         for i in range(1, 11):
             assert c.__setitem__("key_range", i) != False, "%s (%s) is a valid configuration" % (i, type(i))
-            assert type(c.__getitem__("key_range")) == IntType, "should return int object"
+            assert type(c.__getitem__("key_range")) is int, "should return int object"
 
         # invalid
         for i in (0, 11, "str"):

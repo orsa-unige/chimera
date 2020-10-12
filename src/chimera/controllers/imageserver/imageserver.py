@@ -3,7 +3,7 @@ from chimera.controllers.imageserver.imageserverhttp import ImageServerHTTP
 
 from chimera.util.image import Image
 
-import Pyro.util
+import Pyro4.util
 
 import os
 
@@ -95,7 +95,7 @@ class ImageServer(ChimeraObject):
             image.http(self.getHTTPByID(image.GUID()))
             return image.getProxy()
         except Exception as e:
-            print(''.join(Pyro.util.getPyroTraceback(e)))
+            print(''.join(Pyro4.util.getPyroTraceback(e)))
 
     def unregister(self, image):
         try:
@@ -103,7 +103,7 @@ class ImageServer(ChimeraObject):
             del self.imagesByID[image.GUID()]
             del self.imagesByPath[image.filename()]
         except Exception as e:
-            print(''.join(Pyro.util.getPyroTraceback(e)))
+            print(''.join(Pyro4.util.getPyroTraceback(e)))
 
     def getImageByID(self, id):
         if id in self.imagesByID:

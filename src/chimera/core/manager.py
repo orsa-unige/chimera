@@ -44,8 +44,8 @@ from chimera.core.path import ChimeraPath
 from chimera.core.constants import MANAGER_DEFAULT_HOST, MANAGER_DEFAULT_PORT, MANAGER_LOCATION
 
 try:
-    import Pyro.core
-    import Pyro.errors
+    import Pyro4.core
+    import Pyro4.errors
 except ImportError as e:
     raise RuntimeError("You must have Pyro version >= 3.6 installed.")
 
@@ -53,7 +53,7 @@ import logging
 import socket
 import threading
 import time
-from types import StringType
+import types
 
 
 __all__ = ['Manager']
@@ -62,18 +62,17 @@ __all__ = ['Manager']
 log = logging.getLogger(__name__)
 
 
-class ManagerAdapter (Pyro.core.Daemon):
+class ManagerAdapter (Pyro4.core.Daemon):
 
     def __init__(self, manager, host=None, port=None):
 
-        Pyro.core.initServer(banner=False)
+        #Pyro4.core.initServer(banner=False)
 
         try:
-            Pyro.core.Daemon.__init__(self,
+            Pyro4.core.Daemon.__init__(self,
                                       host=host or MANAGER_DEFAULT_HOST,
-                                      port=port or MANAGER_DEFAULT_PORT,
-                                      norange=0)
-        except Pyro.errors.DaemonError:
+                                      port=port or MANAGER_DEFAULT_PORT)
+        except Pyro4.errors.DaemonError:
             log.error("Couldn't start Chimera server. Check errors below.")
             raise
 
@@ -89,14 +88,14 @@ class ManagerAdapter (Pyro.core.Daemon):
         return self.manager
 
     def getProxyForObj(self, obj):
-        return Proxy(uri=Pyro.core.PyroURI(self.hostname,
+        return Proxy(uri=Pyro4.core.PyroURI(self.hostname,
                                            obj.GUID(),
                                            prtcol=self.protocol,
                                            port=self.port))
 
     def connect(self, obj, name=None, index=None):
 
-        URI = Pyro.core.PyroURI(
+        URI = Pyro4.core.PyroURI(
             self.hostname, obj.GUID(), prtcol=self.protocol, port=self.port)
 
         self.implementations[obj.GUID()] = (obj, name)
@@ -131,8 +130,8 @@ class Manager (RemoteObject):
         self.classLoader = ClassLoader()
 
         # identity
-        self.setGUID(MANAGER_LOCATION)
-
+        #self.setGUID(MANAGER_LOCATION)
+        
         # shutdown event
         self.died = threading.Event()
 
@@ -277,7 +276,7 @@ class Manager (RemoteObject):
                     other = Proxy(location=MANAGER_LOCATION,
                                   host=location.host or host,
                                   port=location.port or port)
-                except Pyro.errors.URIError as e:
+                except Pyro4.errors.URIError as e:
                     raise InvalidLocationException(
                         "Invalid remote location given. '%s' (%s)." % (location, str(e)))
 

@@ -4,7 +4,7 @@ from chimera.core.exceptions import InvalidLocationException, ObjectNotFoundExce
 
 from nose.tools import assert_raises
 
-from types import StringType
+import types
 
 
 class TestResources:
@@ -37,7 +37,7 @@ class TestResources:
 
         assert len (self.res) == 0
         assert self.res.add ("/Location/l1", "instance-1", "uri-1") == 0
-        assert type(str(self.res.get('/Location/0'))) == StringType
+        assert type(str(self.res.get('/Location/0'))) is str
         
 
     def test_remove (self):

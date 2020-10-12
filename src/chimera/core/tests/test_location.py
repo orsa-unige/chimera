@@ -4,7 +4,7 @@ from chimera.core.exceptions import InvalidLocationException
 
 from nose.tools import assert_raises
 
-from types import StringType
+import types
 
 
 class TestLocation (object):
@@ -48,7 +48,7 @@ class TestLocation (object):
         assert l.cls == "Class"
         assert l.name == "name"
         assert l.config == dict(option1="value1", option2="value2")
-        assert type(str(l)) == StringType        
+        assert type(str(l)) is str        
 
         # host version
         l = Location(host='host.com.br', port=1000, cls="Class", name="name", config=dict(option1="value1", option2="value2"))
@@ -58,7 +58,7 @@ class TestLocation (object):
         assert l.cls == "Class"
         assert l.name == "name"
         assert l.config == dict(option1="value1", option2="value2")
-        assert type(str(l)) == StringType
+        assert type(str(l)) is str
 
         l = Location(host='host.com.br', cls="Class", name="name", config=dict(option1="value1", option2="value2"))
         assert l
@@ -67,7 +67,7 @@ class TestLocation (object):
         assert l.cls == "Class"
         assert l.name == "name"
         assert l.config == dict(option1="value1", option2="value2")
-        assert type(str(l)) == StringType
+        assert type(str(l)) is str
 
         assert_raises(InvalidLocationException, Location, host='host.com.br', port="xyz",
                                                           cls="Class", name="name",

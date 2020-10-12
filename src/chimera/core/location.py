@@ -27,7 +27,7 @@ import sys
 import logging
 log = logging.getLogger(__name__)
 
-from types import StringType
+import types
 
 from chimera.core.exceptions import InvalidLocationException
 
@@ -58,7 +58,7 @@ class Location(object):
         self._config = None
 
         # simple string
-        if isinstance(location, StringType):
+        if isinstance(location, str):
             (self._host, self._port, self._class,
              self._name, self._config) = self.parse(location)
             if not self._host and "host" in options:

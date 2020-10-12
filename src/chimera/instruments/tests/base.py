@@ -1,9 +1,9 @@
 
-from types import FunctionType
+import types
 
 def setAttribute(dict_, name, value):
     for func_name, func in list(dict_.items()):
-        if type(func) == FunctionType and not func_name.startswith("_"):
+        if isinstance(x, types.FunctionType)  and not func_name.startswith("_"):
             setattr(func, name, value)
 
 class RealHardwareTestMetaClass(type):

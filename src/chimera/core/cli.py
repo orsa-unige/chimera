@@ -12,7 +12,7 @@ from chimera.core.managerlocator import ManagerLocator, ManagerNotFoundException
 
 from chimera.util.enum import Enum
 
-import Pyro.errors
+import Pyro4.errors
 
 import sys
 import optparse
@@ -569,7 +569,7 @@ class ChimeraCLI (object):
         try:
             if self._remoteManager and not self._keepRemoteManager:
                 self._remoteManager.shutdown()
-        except Pyro.errors.ConnectionClosedError:
+        except Pyro4.errors.ConnectionClosedError:
             pass
 
     def _createParser(self):

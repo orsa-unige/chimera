@@ -21,25 +21,27 @@
 
 
 try:
-    import Pyro.core
-    import Pyro.constants
+    import Pyro4.core
+    import Pyro4.constants
 except ImportError as e:
-    raise RuntimeError("You must have Pyro version >= 3.6 installed.")
+    raise RuntimeError("You must have Pyro version >= 4.80 installed.")
 
 
 import time
 import sys
 
-from types import StringType
+import types
 
 
 __all__ = ['RemoteObject']
 
 
-class RemoteObject (Pyro.core.ObjBase):
+#class RemoteObject (Pyro4.core.ObjBase):
+class RemoteObject ():
 
     def __init__(self):
-        Pyro.core.ObjBase.__init__(self)
+#        Pyro4.core.ObjBase.__init__(self)
+        #Pyro4.core.__init__(self)
 
         self.__lastUsed = None
 
@@ -64,13 +66,13 @@ class RemoteObject (Pyro.core.ObjBase):
         # find the method in this object, and call it with the supplied args.
         keywords = {}
 
-        if flags & Pyro.constants.RIF_Keywords:
+        if flags & Pyro4.constants.RIF_Keywords:
             # reconstruct the varargs from a tuple like
             #  (a,b,(va1,va2,va3...),{kw1:?,...})
             keywords = args[-1]
             args = args[:-1]
 
-        if flags & Pyro.constants.RIF_Varargs:
+        if flags & Pyro4.constants.RIF_Varargs:
             # reconstruct the varargs from a tuple like (a,b,(va1,va2,va3...))
             args = args[:-1] + args[-1]
 
@@ -78,7 +80,8 @@ class RemoteObject (Pyro.core.ObjBase):
         # that object doesn't implement that method. If you don't check this,
         # remote attributes won't work with delegates for instance, because the
         # delegate object doesn't implement _r_xa. (remote_xxxattr)
-        if method in dir(Pyro.core.ObjBase):
+        if method in dir(Pyro4.core):
+        #if method in dir(Pyro4.core.ObjBase):
             return getattr(self, method)(*args, **keywords)
 
         else:
@@ -105,7 +108,7 @@ class RemoteObject (Pyro.core.ObjBase):
             except:
                 exc_info = sys.exc_info()
                 try:
-                    if type(exc_info[0]) == StringType:
+                    if type(exc_info[0]) is str:
                         if exc_info[1] is None:
                             raise Exception(exc_info[0]).with_traceback(exc_info[2])
                         else:

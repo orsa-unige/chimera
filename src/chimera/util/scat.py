@@ -6,7 +6,7 @@ import tempfile
 import logging
 import os
 
-from types import TupleType, IntType, FloatType
+import types
 
 import asciidata
 
@@ -37,7 +37,7 @@ class SCatWrapper (object):
         if "box" in conditions:
             side = conditions.get("box")
 
-            if not type(side) == TupleType:
+            if not type(side) is tuple:
                 scat_options.update({"box": (side / 2.0, side / 2.0)})
             else:
 
@@ -68,11 +68,11 @@ class SCatWrapper (object):
 
         for mag, values in mags:
             if mag in bands:
-                if type(values) == TupleType and len(values) >= 2:
+                if type(values) is tuple and len(values) >= 2:
                     mag_brighter = values[0]
                     mag_faintest = values[1]
                     mag_band = mag
-                elif type(values) in (IntType, FloatType):
+                elif type(values) in (int, float):
                     mag_band = mag
                     mag_faintest = values
 

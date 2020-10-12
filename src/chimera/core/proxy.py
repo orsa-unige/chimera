@@ -21,7 +21,7 @@
 
 
 try:
-    import Pyro.core
+    import Pyro4.core
 except ImportError as e:
     raise RuntimeError("You must have Pyro version >= 3.6 installed.")
 
@@ -40,10 +40,10 @@ __all__ = ['Proxy',
 log = logging.getLogger(__name__)
 
 
-class Proxy (Pyro.core.DynamicProxy):
+class Proxy (Pyro4.core.Proxy):
 
     def __init__(self, location=None, host=None, port=None, uri=None):
-        Pyro.core.initClient(banner=0)
+        Pyro4.core.initClient(banner=0)
 
         if not uri:
             location = Location(location)
@@ -51,18 +51,18 @@ class Proxy (Pyro.core.DynamicProxy):
             host = (host or location.host) or MANAGER_DEFAULT_HOST
             port = (port or location.port) or MANAGER_DEFAULT_PORT
 
-            uri = Pyro.core.PyroURI(host=host,
+            uri = Pyro4.core.PyroURI(host=host,
                                     port=port,
                                     objectID="/%s/%s" %
                                     (location.cls, location.name))
 
-        Pyro.core.DynamicProxy.__init__(self, uri)
+        Pyro4.core.Proxy.__init__(self, uri)
 
     def ping(self):
 
         try:
             return self.__ping__()
-        except Pyro.errors.ProtocolError:
+        except Pyro4.errors.ProtocolError:
             return 0
 
     def __getnewargs__(self):

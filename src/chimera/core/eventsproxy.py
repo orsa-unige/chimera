@@ -24,7 +24,7 @@ from chimera.core.proxy import Proxy
 import logging
 #import chimera.core.log
 
-import Pyro.errors
+import Pyro4.errors
 
 import traceback
 import sys
@@ -96,7 +96,7 @@ class EventsProxy:
 
                 excluded.append(handler)
                 continue
-            except Pyro.errors.ProtocolError as e:
+            except Pyro4.errors.ProtocolError as e:
                 log.debug(
                     "Unreachable handler (%s). Removing from subscribers list." % proxy)
                 excluded.append(handler)
